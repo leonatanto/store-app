@@ -1,0 +1,80 @@
+# Store App - Cursor Rules
+
+## Project Overview
+E-commerce mobile app for baby carrier store built with Expo, React Native, TypeScript.
+
+## Tech Stack
+- **Framework**: Expo Router
+- **State Management**: Zustand
+- **Data Fetching**: React Query (TanStack Query)
+- **Storage**: MMKV
+- **Styling**: NativeWind + Atoms Pattern
+- **Media**: Expo AV
+- **Language**: TypeScript
+
+## Core Principles
+1. **No Over-Engineering**: Keep it simple, scalable
+2. **Reusable Codebase**: Brand-agnostic via config system
+3. **Performance First**: Optimize for speed (see docs/performance.md)
+4. **Atoms Pattern**: Use atomic styling, no hardcoded values
+5. **English Only**: All code, comments, file names in English
+
+## File Naming
+- Components: PascalCase (e.g., `ProductCard.tsx`)
+- Utilities: camelCase (e.g., `formatPrice.ts`)
+- Hooks: camelCase with `use` prefix (e.g., `useCart.ts`)
+- Stores: camelCase with `Store` suffix (e.g., `cartStore.ts`)
+- Constants: UPPER_SNAKE_CASE (e.g., `API_ENDPOINTS.ts`)
+
+## Code Style
+- Use TypeScript strict mode
+- Prefer functional components with hooks
+- Use async/await over promises
+- Extract reusable logic to custom hooks
+- Keep components small and focused
+- Code formatting: Prettier (semi: false, singleQuote: true)
+- Linting: ESLint with Expo config
+
+## Styling Rules
+- **Never hardcode**: colors, font sizes, spacing
+- Use theme tokens from `constants/theme.ts`
+- Use NativeWind classes for layout
+- Use Atoms for reusable style combinations
+- Support light/dark mode via theme system
+
+## Architecture
+See `docs/architecture.md` for detailed structure.
+
+## Documentation
+- App Plan: `docs/app-plan.md`
+- Architecture: `docs/architecture.md`
+- Styling Guide: `docs/styling.md`
+- Performance: `docs/performance.md`
+- API Integration: `docs/api.md`
+
+## Key Directories
+- `app/` - Expo Router screens (file-based routing)
+- `components/` - Shared UI components (atoms, molecules, organisms)
+- `features/` - Feature-based modules (self-contained)
+  - Each feature has: `api/`, `components/`, `hooks/`, `types/`, `index.ts`
+- `lib/` - Infrastructure (API client, storage, query setup, utils)
+- `stores/` - Global Zustand stores (cart, theme, auth)
+- `hooks/` - Global/shared hooks (use-theme, use-cart)
+- `constants/` - App configuration (theme, brand, API endpoints)
+- `types/` - Global/shared types (User, Address)
+
+## Feature Organization
+Each feature in `features/` is self-contained:
+- `api/` - Feature-specific API calls
+- `components/` - Feature-specific components
+- `hooks/` - Feature-specific hooks
+- `types/` - Feature-specific types
+- `index.ts` - Public API exports
+
+**Import Rules:**
+- Within feature: Use relative imports
+- Cross-feature: Import from feature `index.ts`
+- Shared code: Import from `lib/` or `components/`
+
+## Brand Configuration
+App branding is configurable via `constants/brand.ts` for multi-brand reuse.
