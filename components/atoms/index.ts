@@ -6,6 +6,16 @@
 import { StyleSheet, ViewStyle, TextStyle } from 'react-native'
 import { theme } from '@/constants/theme'
 
+// Export components
+export { Button } from './Button'
+export { Text } from './Text'
+export { View } from './View'
+export { Card } from './Card'
+export { Avatar } from './Avatar'
+export { TextInput } from './TextInput'
+export { Dropdown } from './Dropdown'
+export type { DropdownOption } from './Dropdown'
+
 type Atoms = {
   // Layout
   flexRow: ViewStyle
@@ -14,6 +24,8 @@ type Atoms = {
   flexCenter: ViewStyle
   flexBetween: ViewStyle
   flexAround: ViewStyle
+  justifyEnd: ViewStyle
+  justifyStart: ViewStyle
   
   // Spacing
   pXxs: ViewStyle
@@ -84,6 +96,12 @@ export const atoms: Atoms = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
+  },
+  justifyEnd: {
+    justifyContent: 'flex-end',
+  },
+  justifyStart: {
+    justifyContent: 'flex-start',
   },
   
   // Spacing - Padding
