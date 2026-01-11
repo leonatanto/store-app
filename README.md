@@ -14,14 +14,45 @@ E-commerce mobile app for baby carrier store built with Expo, React Native, and 
 
 ## Setup
 
-1. Install dependencies:
+1. **Install pnpm** (if not installed):
 ```bash
-npm install
+npm install -g pnpm
 ```
 
-2. Start the development server:
+2. **Install dependencies:**
 ```bash
-npm start
+pnpm install
+```
+
+3. **Prebuild native code (required for MMKV):**
+```bash
+npx expo prebuild
+```
+
+4. **Run on specific platform:**
+```bash
+pnpm ios      # iOS Simulator
+pnpm android  # Android Emulator
+pnpm web      # Web Browser
+```
+
+**Note:** 
+- ⚠️ **Requires Development Build** (not Expo Go)
+- MMKV requires native code - run `expo prebuild` first
+- Bottom sheet automatically falls back to Modal in Expo Go
+
+## Quick Start
+
+```bash
+# Install dependencies
+pnpm install
+
+# Prebuild native code (required for MMKV)
+npx expo prebuild
+
+# Run on simulator
+pnpm ios      # iOS Simulator
+pnpm android  # Android Emulator
 ```
 
 ## Project Structure

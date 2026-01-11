@@ -2,11 +2,18 @@
 
 ## Overview
 
-Using `@gorhom/bottom-sheet` for smooth, performant bottom sheets.
+Using `@gorhom/bottom-sheet` for smooth, performant bottom sheets. **Automatically falls back to Modal in Expo Go** for compatibility.
 
 ## Setup
 
 Bottom sheet provider is already set up in `app/_layout.tsx`.
+
+## Expo Go Compatibility
+
+- **Expo Go**: Uses React Native Modal (fallback)
+- **Development Build**: Uses native `@gorhom/bottom-sheet` (full features)
+
+The component automatically detects the environment and uses the appropriate implementation.
 
 ## Basic Usage
 

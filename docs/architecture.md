@@ -100,7 +100,7 @@ lib/                          # Infrastructure & utilities
     errors.ts                 # Error handling utilities
     types.ts                  # API response types
   storage/
-    mmkv.ts                   # MMKV storage setup
+    storage.ts                # MMKV storage setup
     keys.ts                   # Storage keys constants
   query/
     queryClient.ts            # React Query setup

@@ -5,7 +5,7 @@
 
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
-import { storageHelpers } from '@/lib/storage/mmkv'
+import { storageHelpers } from '@/lib/storage/storage'
 import { StorageKeys } from '@/lib/storage/keys'
 
 export type ThemeMode = 'light' | 'dark' | 'system'
@@ -15,7 +15,7 @@ interface ThemeState {
   setMode: (mode: ThemeMode) => void
 }
 
-// Custom storage adapter for Zustand + MMKV
+// MMKV storage adapter for Zustand (synchronous)
 const mmkvStorage = {
   getItem: (name: string): string | null => {
     return storageHelpers.getString(name) ?? null

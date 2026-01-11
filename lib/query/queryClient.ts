@@ -6,20 +6,14 @@
 import { QueryClient } from '@tanstack/react-query'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
-import { storage } from '../storage/mmkv'
+import { storageHelpers } from '@/lib/storage/storage'
 
-// Create persister using MMKV
+// Create persister using MMKV (synchronous)
 const persister = createSyncStoragePersister({
   storage: {
-    getItem: (key: string) => {
-      return storage.getString(key) ?? null
-    },
-    setItem: (key: string, value: string) => {
-      storage.set(key, value)
-    },
-    removeItem: (key: string) => {
-      storage.delete(key)
-    },
+    getItem: (key: string) => storageHelpers.getString(key) ?? null,
+    setItem: (key: string, value: string) => storageHelpers.setString(key, value),
+    removeItem: (key: string) => storageHelpers.delete(key),
   },
 })
 

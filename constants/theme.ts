@@ -146,5 +146,11 @@ export const theme = {
 
 export type Theme = typeof theme
 
-// Legacy export for compatibility
+// Legacy exports for compatibility
 export const Colors = theme.colors
+
+export const Fonts = {
+  rounded: theme.typography.fontFamily.sans,
+  mono: theme.typography.fontFamily.mono,
+  serif: theme.typography.fontFamily.serif,
+}

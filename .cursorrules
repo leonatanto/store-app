@@ -7,7 +7,7 @@ E-commerce mobile app for baby carrier store built with Expo, React Native, Type
 - **Framework**: Expo Router
 - **State Management**: Zustand
 - **Data Fetching**: React Query (TanStack Query)
-- **Storage**: MMKV
+- **Storage**: MMKV (requires development build)
 - **Styling**: NativeWind + Atoms Pattern
 - **Media**: Expo AV
 - **Language**: TypeScript

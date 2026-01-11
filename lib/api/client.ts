@@ -5,7 +5,7 @@
 
 import axios, { AxiosInstance, AxiosError, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios'
 import { ApiError } from './types'
-import { storageHelpers } from '@/lib/storage/mmkv'
+import { storageHelpers } from '@/lib/storage/storage'
 import { StorageKeys } from '@/lib/storage/keys'
 
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'https://api.example.com'
@@ -27,7 +27,7 @@ const axiosInstance: AxiosInstance = axios.create({
  */
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // Get auth token from storage
+    // Get auth token from storage (MMKV is synchronous)
     const token = storageHelpers.getString(StorageKeys.AUTH_TOKEN)
     
     if (token && config.headers) {
@@ -84,7 +84,7 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true
       
       try {
-        // Try to refresh token
+        // Try to refresh token (MMKV is synchronous)
         const refreshToken = storageHelpers.getString(StorageKeys.REFRESH_TOKEN)
         
         if (refreshToken) {

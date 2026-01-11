@@ -1,16 +1,32 @@
 /**
  * Bottom Sheet Component
  * Reusable bottom sheet with theme support
+ * Falls back to Modal in Expo Go
  */
 
-import React, { useCallback, useImperativeHandle, forwardRef } from 'react'
-import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetView,
-  BottomSheetModal,
-} from '@gorhom/bottom-sheet'
+import React, { useCallback, useImperativeHandle, forwardRef, useState } from 'react'
+import { Modal, TouchableOpacity, View as RNView } from 'react-native'
 import { useTheme } from '@/hooks/use-theme'
 import { atoms } from '@/components/atoms'
+
+// Try to import bottom sheet (only works in development build)
+let BottomSheetComponent: any = null
+let BottomSheetBackdrop: any = null
+let BottomSheetView: any = null
+
+try {
+  const bottomSheetModule = require('@gorhom/bottom-sheet')
+  BottomSheetComponent = bottomSheetModule.default
+  BottomSheetBackdrop = bottomSheetModule.BottomSheetBackdrop
+  BottomSheetView = bottomSheetModule.BottomSheetView
+} catch (error) {
+  // Bottom sheet not available (Expo Go)
+  if (__DEV__) {
+    console.warn(
+      'Bottom sheet not available. Using Modal fallback. Run "expo prebuild" for full bottom sheet support.'
+    )
+  }
+}
 
 export interface BottomSheetRef {
   present: () => void
@@ -28,12 +44,36 @@ interface BottomSheetProps {
 export const AppBottomSheet = forwardRef<BottomSheetRef, BottomSheetProps>(
   ({ children, snapPoints = ['50%'], enablePanDownToClose = true, onClose }, ref) => {
     const { colors } = useTheme()
-    const bottomSheetRef = React.useRef<BottomSheet>(null)
+    const [isVisible, setIsVisible] = useState(false)
+    const bottomSheetRef = React.useRef<any>(null)
+
+    // Use native bottom sheet if available
+    const useNativeBottomSheet = BottomSheetComponent !== null
 
     useImperativeHandle(ref, () => ({
-      present: () => bottomSheetRef.current?.expand(),
-      dismiss: () => bottomSheetRef.current?.close(),
-      close: () => bottomSheetRef.current?.close(),
+      present: () => {
+        if (useNativeBottomSheet) {
+          bottomSheetRef.current?.expand()
+        } else {
+          setIsVisible(true)
+        }
+      },
+      dismiss: () => {
+        if (useNativeBottomSheet) {
+          bottomSheetRef.current?.close()
+        } else {
+          setIsVisible(false)
+          onClose?.()
+        }
+      },
+      close: () => {
+        if (useNativeBottomSheet) {
+          bottomSheetRef.current?.close()
+        } else {
+          setIsVisible(false)
+          onClose?.()
+        }
+      },
     }))
 
     const handleSheetChanges = useCallback(
@@ -57,8 +97,54 @@ export const AppBottomSheet = forwardRef<BottomSheetRef, BottomSheetProps>(
       []
     )
 
+    // Fallback to Modal for Expo Go
+    if (!useNativeBottomSheet) {
+      return (
+        <Modal
+          visible={isVisible}
+          transparent
+          animationType="slide"
+          onRequestClose={() => {
+            setIsVisible(false)
+            onClose?.()
+          }}
+        >
+          <TouchableOpacity
+            style={[atoms.flex1, { backgroundColor: 'rgba(0,0,0,0.5)' }]}
+            activeOpacity={1}
+            onPress={() => {
+              if (enablePanDownToClose) {
+                setIsVisible(false)
+                onClose?.()
+              }
+            }}
+          >
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={(e) => e.stopPropagation()}
+              style={[
+                atoms.flex1,
+                atoms.justifyEnd,
+                {
+                  backgroundColor: colors.card,
+                  borderTopLeftRadius: 20,
+                  borderTopRightRadius: 20,
+                  maxHeight: '90%',
+                },
+              ]}
+            >
+              <RNView style={[atoms.flex1, { backgroundColor: colors.card }]}>
+                {children}
+              </RNView>
+            </TouchableOpacity>
+          </TouchableOpacity>
+        </Modal>
+      )
+    }
+
+    // Native bottom sheet (development build)
     return (
-      <BottomSheet
+      <BottomSheetComponent
         ref={bottomSheetRef}
         index={-1}
         snapPoints={snapPoints}
@@ -71,7 +157,7 @@ export const AppBottomSheet = forwardRef<BottomSheetRef, BottomSheetProps>(
         <BottomSheetView style={[atoms.flex1, { backgroundColor: colors.card }]}>
           {children}
         </BottomSheetView>
-      </BottomSheet>
+      </BottomSheetComponent>
     )
   }
 )

@@ -5,7 +5,7 @@
 
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
-import { storageHelpers } from '@/lib/storage/mmkv'
+import { storageHelpers } from '@/lib/storage/storage'
 import { StorageKeys } from '@/lib/storage/keys'
 
 export interface CartItem {
@@ -31,6 +31,7 @@ interface CartState {
   getItemCount: () => number
 }
 
+// MMKV storage adapter for Zustand (synchronous)
 const mmkvStorage = {
   getItem: (name: string): string | null => {
     return storageHelpers.getString(name) ?? null
